@@ -1,0 +1,167 @@
+#! /opt/Nuke16.0v1/libnuke-16.0.1.so -nx
+version 16.0 v1
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="0" y="32" w="2560" h="1387" maximized="1" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1897" stretch="1"/>
+            <splitter orientation="2">
+                <split size="790"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="555"/>
+                <dock id="" activePageId="DAG.1" focus="true">
+                    <page id="DAG.1"/>
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                </dock>
+            </splitter>
+            <split size="615"/>
+            <dock id="" activePageId="Properties.1">
+                <page id="Properties.1"/>
+                <page id="uk.co.thefoundry.backgroundrenderview.1"/>
+                <page id="Scenegraph.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /home/pm/Documents/nuke/Interpolator1.nk
+ frame 47
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ monitorOutLUT rec709
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+Constant {
+ inputs 0
+ channels rgb
+ format "1920 1080 0 0 1920 1080 1 HD_1080"
+ name Constant3
+ xpos -309
+ ypos -303
+}
+Dot {
+ name Dot1
+ xpos -275
+ ypos -165
+}
+set Nf714bf0 [stack 0]
+Interpolator {
+ interp_mode Distance
+ point_size 4
+ point01_pos {1362 288}
+ point01_color {0.123366 1.014283 0 0.023}
+ point01_color_panelDropped true
+ point02_pos {344 390}
+ point02_color {0 0.572266 1.082941 0.142}
+ point02_color_panelDropped true
+ point03_enabled true
+ point03_pos {1408 816}
+ point03_color {1.082557 0 0.371817 0.214}
+ point03_color_panelDropped true
+ point04_enabled true
+ point04_pos {410 886}
+ point04_color {1 0.910304 0 1}
+ point04_color_panelDropped true
+ name Interpolator3
+ tile_color 0xffff00ff
+ xpos -309
+ ypos -109
+}
+push $Nf714bf0
+Expression {
+ temp_name0 px
+ temp_expr0 700
+ temp_name1 py
+ temp_expr1 600
+ temp_name2 dx
+ temp_expr2 (x-px)*(x-px)
+ temp_name3 dy
+ temp_expr3 (y-py)*(y-py)
+ expr0 sqrt(dx+dy)
+ expr1 0
+ expr2 0
+ name Expression1
+ xpos -140
+ ypos -103
+}
+Merge2 {
+ inputs 2
+ operation minus
+ name Merge1
+ xpos -309
+ ypos -6
+}
+Expression {
+ expr0 "r > 0 ? 1 : 0"
+ expr1 0
+ expr2 0
+ name Expression2
+ xpos -309
+ ypos 44
+}
+Shuffle {
+ green red
+ blue red
+ alpha red
+ name Shuffle1
+ xpos -309
+ ypos 122
+}
+push $Nf714bf0
+Interpolator {
+ point_size 4
+ point01_pos {{parent.Interpolator3.point01_pos} {parent.Interpolator3.point01_pos}}
+ point01_color {0.123366 1.014283 0 0.023}
+ point01_color_panelDropped true
+ point02_pos {{parent.Interpolator3.point02_pos} {parent.Interpolator3.point02_pos}}
+ point02_color {0 0.572266 1.082941 0.142}
+ point02_color_panelDropped true
+ point03_enabled true
+ point03_pos {{parent.Interpolator3.point03_pos} {parent.Interpolator3.point03_pos}}
+ point03_color {1.082557 0 0.371817 0.214}
+ point03_color_panelDropped true
+ point04_enabled true
+ point04_pos {{parent.Interpolator3.point04_pos} {parent.Interpolator3.point04_pos}}
+ point04_color {1 0.910304 0 1}
+ point04_color_panelDropped true
+ name Interpolator4
+ xpos -427
+ ypos -104
+}
+Merge2 {
+ inputs 2
+ mix 0.452
+ name Merge2
+ xpos -427
+ ypos 122
+}
+Dot {
+ name Dot2
+ xpos -393
+ ypos 229
+}
+Viewer {
+ frame_range 30-100
+ translate {-2.068000078 -0.01600000076}
+ monitorOutNDISenderName "Nuke - Interpolator1 - Viewer1"
+ monitorOutOutputTransform rec709
+ name Viewer1
+ xpos -201
+ ypos 384
+}
